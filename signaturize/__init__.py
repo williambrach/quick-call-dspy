@@ -1,5 +1,7 @@
 import dspy
 
+from signaturize.signature_generator import SignatureGenerator
+
 
 def from_dspy_string(cls_string: str) -> type[dspy.Signature]:
     try:
@@ -12,7 +14,9 @@ def from_dspy_string(cls_string: str) -> type[dspy.Signature]:
 
         # We must find exactly one class.
         if not signature_classes:
-            raise ValueError("No class inheriting from dspy.Signature was found in the provided string.")
+            raise ValueError(
+                "No class inheriting from dspy.Signature was found in the provided string."
+            )
 
         if len(signature_classes) > 1:
             class_names = [cls.__name__ for cls in signature_classes]
@@ -25,3 +29,15 @@ def from_dspy_string(cls_string: str) -> type[dspy.Signature]:
     except Exception as e:
         raise RuntimeError(f"An unexpected error occurred: {e}") from e
 
+
+def from_prompt(
+    prompt: str, return_type: str = "signature"
+) -> type | str:
+    if return_type not in {"signature", "string"}:
+        raise ValueError("return_type must be either 'signature' or 'string'")
+    generator = SignatureGenerator()
+    result = generator(prompt=prompt)
+    signature_string = generator.generate_code(result)
+    signature = generator.create_signature_class(result)
+
+    return signature if return_type == "signature" else signature_string
