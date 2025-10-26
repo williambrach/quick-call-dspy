@@ -32,7 +32,7 @@ or
 docker-compose up --build
 ```
 
-`Open the local URL (http://127.0.0.1:7860) in your browser and enjoy!`
+5. Open the local URL (http://127.0.0.1:7860) in your browser and enjoy!
 
 ## Signaturize docs
 
