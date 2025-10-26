@@ -148,7 +148,7 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
             )
         with gr.Column():
             gen_prompt_button = gr.Button(
-                "Generate from Prompt",
+                "Generate signature",
                 variant="primary",
                 size="lg",
             )
@@ -163,7 +163,7 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
                 value=EXAMPLE_CLASS_STRING.strip(),
             )
         with gr.Column():
-            gen_string_button = gr.Button("Generate from String", variant="primary")
+            gen_string_button = gr.Button("Load signature", variant="primary")
 
     # # --- Prediction ---
     gr.Markdown("# Prediction")
