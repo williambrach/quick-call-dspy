@@ -2,6 +2,8 @@
 
 A just simple UI ([gradio](https://github.com/gradio-app/gradio)) to explain product manager what your prompt ([DSPy](https://github.com/stanfordnlp/dspy)) does and it is also super effective with students.
 
+![demo](assets/demo.webp)
+
 ## Getting Started
 
 1. Clone the repository:
