@@ -1,0 +1,5 @@
+services:
+  quick-call-dspy:
+    build: .
+    ports:
+      - "${GRADIO_PORT}:${GRADIO_PORT}"

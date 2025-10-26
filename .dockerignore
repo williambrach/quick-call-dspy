@@ -1,0 +1,17 @@
+# Ignore the virtual environment
+.venv/
+
+# Ignore the Git repository history
+.git/
+
+# Ignore Docker/Git configuration files
+.gitignore
+.dockerignore
+
+README.md
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

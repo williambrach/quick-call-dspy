@@ -13,6 +13,7 @@ load_dotenv()
 API_KEY = os.getenv("API_KEY")
 API_BASE = os.getenv("API_BASE")
 MODEL_NAME = os.getenv("MODEL_NAME")
+GRADIO_PORT = int(os.getenv("GRADIO_PORT", "7860"))
 
 
 def get_fields_by_type(signature: type[Signature], field_type: str) -> list[str]:
@@ -31,16 +32,17 @@ class BasicQA(dspy.Signature):
     answer: str = dspy.OutputField(desc="A concise answer to the question.")
 """
 
+
 def configure_lm(
     api_key: str | None, api_base: str | None, model_name: str | None
-) -> tuple[str, dspy.LM | None]:
+) -> tuple[str, dict | None]:
     """Configures the dspy.LM with user-provided credentials."""
 
     if model_name is None or api_key is None or api_base is None:
         return "❌ Error: Model Name, API Key, and API Base are required.", None
     try:
         lm = dspy.LM(model_name, api_key=api_key, api_base=api_base)
-        return "✅ LM Configured Successfully!", lm
+        return "✅ LM Configured Successfully!", {"configured": lm}
     except Exception as e:
         print(f"Configuration error: {e}")
         return f"❌ Configuration Error: {e}", None
@@ -84,7 +86,6 @@ def run_prediction(
 
     if program is None:
         return {}, "❌ Error: No signature is loaded. Please generate one first."
-
     if lm is None or lm.get("configured") is None:
         return {}, "❌ Error: LM is not configured. Please configure it first."
 
@@ -113,10 +114,11 @@ def run_prediction(
 
 with gr.Blocks(theme=gr.themes.Default()) as demo:
     gr.Markdown("# quick-call-dspy")
+    gr.Markdown("[github](https://github.com/williambrach/quick-call-dspy)")
 
     dspy_program = gr.State(None)
     _, state = configure_lm(API_KEY, API_BASE, MODEL_NAME)
-    lm_configured_state = gr.State({"configured": state})
+    lm_configured_state = gr.State(state)
 
     run_status_md = gr.Markdown()
     # --- LM Configuration ---
@@ -135,23 +137,21 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
             value=os.getenv("MODEL_NAME", None),
         )
         config_button = gr.Button("Configure LM")
-        config_status_md = gr.Markdown()
 
-    with gr.Accordion("Suggest signature", open=False):
-        gr.Markdown("Enter prompt to generate Signature")
-        with gr.Row():
-            with gr.Column():
-                prompt_box = gr.Textbox(
-                    label="Prompt to generate signature",
-                    lines=5,
-                    placeholder="e.g., Create a signature for generating recipes. Output fields should be ingredients, steps, and title.",
-                )
-            with gr.Column():
-                gen_prompt_button = gr.Button(
-                    "Generate from Prompt",
-                    variant="primary",
-                    size="lg",
-                )
+    with gr.Accordion("Suggest signature", open=False), gr.Row():
+        # with gr.Row():
+        with gr.Column():
+            prompt_box = gr.Textbox(
+                label="Prompt to generate signature",
+                lines=5,
+                placeholder="e.g., Create a signature for generating recipes. Output fields should be ingredients, steps, and title.",
+            )
+        with gr.Column():
+            gen_prompt_button = gr.Button(
+                "Generate from Prompt",
+                variant="primary",
+                size="lg",
+            )
 
     gr.Markdown("# DSPy Signature")
     with gr.Row():
@@ -180,7 +180,7 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
     config_button.click(
         fn=configure_lm,
         inputs=[api_key_box, api_base_box, model_name_box],
-        outputs=[config_status_md, lm_configured_state],
+        outputs=[run_status_md, lm_configured_state],
     )
 
     # Signature Generation
@@ -208,4 +208,4 @@ with gr.Blocks(theme=gr.themes.Default()) as demo:
     )
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(share=False, server_name="0.0.0.0", server_port=GRADIO_PORT)

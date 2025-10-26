@@ -193,8 +193,8 @@ class SignatureGenerator(dspy.Module):
         imports = cls.get_required_imports(prediction.signature_fields)
 
         code_lines = []
-        code_lines.extend(imports)
-        code_lines.append("")
+        # code_lines.extend(imports)
+        # code_lines.append("")
         code_lines.append(f"class {prediction.signature_name}(dspy.Signature):")
         code_lines.append(f'    """{prediction.task_description}"""')
         code_lines.append("")

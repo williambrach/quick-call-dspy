@@ -42,8 +42,8 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
-    "models.py"
-    "signaturize/signature_generator.py"
+    "models.py",
+    "signature_generator.py"
 ]
 
 
