@@ -44,7 +44,7 @@ def from_prompt(prompt: str, return_type: str = "signature") -> type | str:
 - supported return types: "signature", "string"
 
 This functionality is build upon the code from 
-[vibe-dspy](https://raw.githubusercontent.com/Archelunch/vibe-dspy/refs/heads/main/src/signature_generator.py) repository. Please check it out for more details and add ⭐️.
+[vibe-dspy](https://github.com/Archelunch/vibe-dspy) repository. Please check it out for more details and add ⭐️.
 
 ### from_dspy_string
 
