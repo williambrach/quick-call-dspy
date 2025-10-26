@@ -22,17 +22,18 @@ uv sync
 cp .env.example .env
 ```
 
-
 4. Run the application:
 ```bash
 gradio app.py
 ```
-or 
+
+5. Open the local URL (http://127.0.0.1:7860) in your browser and enjoy!
+
+### Docker usage
+
 ```bash
 docker-compose up --build
 ```
-
-5. Open the local URL (http://127.0.0.1:7860) in your browser and enjoy!
 
 ## Signaturize docs
 
