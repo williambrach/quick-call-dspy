@@ -15,6 +15,7 @@ cd quick-call-dspy
 ```bash
 uv venv --python 3.12.10
 uv sync
+source .venv/bin/activate
 ```
 
 3. Optional - setup .env and add your credentials or insert your credentials via the UI:
